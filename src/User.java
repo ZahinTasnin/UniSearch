@@ -16,6 +16,9 @@ public class User {
     public String getPassword(){
         return password;
     }
+    public String toString(){
+        return username + "," + password;
+    }
     public void addUni(String university) {
         uniList.add(university);
     }

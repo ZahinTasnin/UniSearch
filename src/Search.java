@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import javax.swing.JScrollPane;
-import java.util.Comparator;
-
 public class Search implements MouseListener {
     private JButton search;
     private JTextField searchField;
@@ -26,16 +24,20 @@ public class Search implements MouseListener {
         frame.setSize(600, 600);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+        BorderLayout g = new BorderLayout();
+        frame.setLayout(g);
 
 
         //search field
         panel1 = new JPanel();
-        panel1.setLayout(new FlowLayout());
+//        panel1.setLayout(new FlowLayout());
 
         search = new JButton(" Search");
         search.setFont(new Font("Serif", Font.PLAIN, 18));
         search.setForeground(Color.white);
-        searchField = new JTextField(20);
+
+        searchField = new JTextField();
+        searchField.setFont(new Font("Serif", Font.PLAIN, 18));
         imageIcon = new ImageIcon("search.png.png");
         Image image1 = imageIcon.getImage().getScaledInstance(25, 25, 100);
         imageIcon = new ImageIcon(image1);
@@ -44,8 +46,8 @@ public class Search implements MouseListener {
         search.setBackground(new Color(249,120,249));
 
 
-        panel1.add(search);
-        panel1.add(searchField);
+        panel1.add(search, BorderLayout.EAST);
+        panel1.add(searchField, BorderLayout.WEST);
 
 
         panel1.setBounds(100,50,400,50);
@@ -80,16 +82,15 @@ public class Search implements MouseListener {
         contentPane.setPreferredSize(new Dimension(500,500));
         contentPane.add(scrollPane);
 
-        frame.add(panel1);
-        frame.add(search);
-        frame.add(searchField);
-        frame.add(contentPane);
+        frame.add(panel1, BorderLayout.NORTH);
+        frame.add(contentPane, BorderLayout.SOUTH);
         contentPane.setBackground(new Color(249,230,249));
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
     }
+
     public static void main(String[]args){
         new Search();
     }
@@ -118,37 +119,15 @@ public class Search implements MouseListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
     public void mousePressed(MouseEvent e) {
-
         JButton src = (JButton) e.getSource();
-
         try{
             Desktop.getDesktop().browse(new URL(findURL(src.getText())).toURI());
         }
         catch (Exception f)
         {}
-
     }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
     private String findURL(String name){
         for(int i = 0; i<top98().size(); i++){
             if(top98().get(i).getName().equals(name)){
@@ -158,4 +137,28 @@ public class Search implements MouseListener {
     }
 
 
+
+
+
+
+
+
+
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
 }

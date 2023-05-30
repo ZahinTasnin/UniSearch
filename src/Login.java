@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Timer;
 
 public class Login {
     private JFrame frame;
@@ -16,11 +13,9 @@ public class Login {
     private JLabel password;
     private JPasswordField passwordField;
     private static ArrayList<User> userList;
-    private JPanel panel1;
 
     public Login(){
 
-        userList = new ArrayList<User>();
         //frame
         frame = new JFrame();
         frame.setTitle("UniSearch");
@@ -28,13 +23,16 @@ public class Login {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
 
+        //initializing
         logIn = new JButton("LOGIN");
         signUp = new JButton("SIGNUP");
         user = new JLabel("USERNAME:");
         password = new JLabel("PASSWORD:");
         userName = new JTextField();
         passwordField = new JPasswordField();
+        userList = new ArrayList<User>();
 
+        //font, style, size
         user.setFont(new Font("Serif", Font.BOLD, 23));
         password.setFont(new Font("Serif", Font.BOLD, 23));
         logIn.setFont(new Font("Serif", Font.ITALIC|Font.BOLD, 18));
@@ -43,10 +41,10 @@ public class Login {
         signUp.setFont(new Font("Serif", Font.ITALIC|Font.BOLD, 18));
         signUp.setForeground(Color.WHITE);
         signUp.setBackground(Color.BLUE);
-        userName.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-        passwordField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        userName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        passwordField.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
-
+        //add components to the panel
         panel = new JPanel();
         panel.setLayout(null);
         panel.add(user);
@@ -57,7 +55,7 @@ public class Login {
         panel.add(signUp);
         panel.setBackground(new Color(232,244,250));
 
-
+        //button responding
         signUp.addActionListener(this::actionPerformed);
         signUp.setFocusable(false);
         logIn.addActionListener(this::actionPerformed);
@@ -79,8 +77,8 @@ public class Login {
         logIn.setLocation(100, 300);
         signUp.setLocation(350, 300);
 
-        frame.add(panel);
 
+        frame.add(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -95,15 +93,18 @@ public class Login {
         panel.add(success);
         if (src.getText().equals("SIGNUP")) {
             String name = userName.getText();
-            String password = String.valueOf(passwordField);
-            boolean add = true;
-            for (User user2 : userList) {
+            char[] password1 = passwordField.getPassword();
+            String password = "";
+            for(int i = 0; i<password1.length; i++){    //get password
+                password+=password1[i];
+            }            boolean add = true;
+            for (User user2 : userList) {               //determine duplicates
                 if (user2.getName().equals(name)) {
                     add = false;
                 }
             }
             if (add) {
-                userList.add(new User(name, password));
+                userList.add(new User(name, password)); //add user + success
                 success.setText("   S U C C E S S F U L");
                 ImageIcon image = new ImageIcon("smiley.png");
                 Image image1 = image.getImage().getScaledInstance(100, 60, 1000);
@@ -123,11 +124,8 @@ public class Login {
                     logIn.setVisible(true);
                 });
                 thread.start();
-                userName.setText("");
-                passwordField.setText("");
-
             } else {
-                success.setText("   U N S U C C E S S F U L");
+                success.setText("   U N S U C C E S S F U L");     //unsuccessful
                 ImageIcon image = new ImageIcon("sad.png");
                 Image image1 = image.getImage().getScaledInstance(60, 60, 1000);
                 image = new ImageIcon(image1);
@@ -147,21 +145,24 @@ public class Login {
                     logIn.setVisible(true);
                 });
                 thread.start();
-                userName.setText("");
-                passwordField.setText("");
             }
-        } else if (src.getText().equals("LOGIN")) {
+            userName.setText("");
+            passwordField.setText("");
+        } else if (src.getText().equals("LOGIN")) {     //login attempt
             logIn.setVisible(false);
-            String name = (String) userName.getText();
-            String password = String.valueOf(passwordField);
-            System.out.println(name + password);
-            boolean add = false;
+            String name = userName.getText();
+            char[] password1 = passwordField.getPassword();
+            String password = "";
+            for(int i = 0; i<password1.length; i++){
+                password+=password1[i];
+            }
+            boolean add1 = false;
             for (User user2 : userList) {
                 if (user2.getName().equals(name) && user2.getPassword().equals(password)) {
-                    add = true;
+                    add1 = true;
                 }
             }
-            if (add==false) {
+            if (add1==false) {
                 success.setText("   U N S U C C E S S F U L");
                 ImageIcon image = new ImageIcon("sad.png");
                 Image image1 = image.getImage().getScaledInstance(60, 60, 1000);

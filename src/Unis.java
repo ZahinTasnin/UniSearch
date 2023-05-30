@@ -13,20 +13,6 @@ public class Unis {
         this.URL = URL;
     }
 
-    @Override
-    public String toString() {
-        return name + URL;
-    }
-
-    /*
-
-    public static String getURL(String school){
-        for(int i = 0; i<buildUniList().size(); i++){
-            if(buildUniList().get(i).name.equals(school)){
-                return buildUniList().get(i).URL;
-            }
-        } return "";
-    }*/
     public String getURL(){
         return URL;
     }
