@@ -1,4 +1,7 @@
 import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -31,18 +34,25 @@ public class Login {
         userName = new JTextField();
         passwordField = new JPasswordField();
         userList = new ArrayList<User>();
+        Border empty = BorderFactory.createEmptyBorder();
 
         //font, style, size
         user.setFont(new Font("Serif", Font.BOLD, 23));
+        user.setForeground(new Color(203, 153, 126));
         password.setFont(new Font("Serif", Font.BOLD, 23));
+        password.setForeground(new Color(203, 153, 126));
         logIn.setFont(new Font("Serif", Font.ITALIC|Font.BOLD, 18));
         logIn.setForeground(Color.WHITE);
-        logIn.setBackground(Color.BLUE);
+        logIn.setBackground(new Color(203, 153, 126));
+        logIn.setBorder(empty);
         signUp.setFont(new Font("Serif", Font.ITALIC|Font.BOLD, 18));
         signUp.setForeground(Color.WHITE);
-        signUp.setBackground(Color.BLUE);
+        signUp.setBackground(new Color(203, 153, 126));
+        signUp.setBorder(empty);
         userName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        userName.setBorder(BorderFactory.createEmptyBorder(1,5,1,1));
         passwordField.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        passwordField.setBorder(BorderFactory.createEmptyBorder(1,5,1,1));
 
         //add components to the panel
         panel = new JPanel();
@@ -53,7 +63,7 @@ public class Login {
         panel.add(passwordField);
         panel.add(logIn);
         panel.add(signUp);
-        panel.setBackground(new Color(232,244,250));
+        panel.setBackground(new Color(240, 239, 235));
 
         //button responding
         signUp.addActionListener(this::actionPerformed);
