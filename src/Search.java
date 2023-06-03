@@ -9,7 +9,7 @@ import java.util.*;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
-public class Search implements MouseListener, FocusListener {
+public class Search implements MouseListener, FocusListener, ActionListener {
     private JButton search;
     private JButton add;
     private JButton remove;
@@ -22,6 +22,10 @@ public class Search implements MouseListener, FocusListener {
     private JPanel panel1;
     private JScrollPane scrollPane;
     private ArrayList<Unis> topSchools;
+    JPanel panel2 = new JPanel();
+    private  JLabel searchResult;
+
+
 
     public Search(){
 
@@ -35,13 +39,13 @@ public class Search implements MouseListener, FocusListener {
 
         //menu field initialization
         panel1 = new JPanel();
-     //   panel1.set
         search = new JButton("Search");
         add = new JButton (" Add");
         remove = new JButton(" Remove");
         viewList = new JButton(" View List");
         searchField = new JTextField("Enter number");
         imageIcon = new ImageIcon("search.png.png");
+        searchResult = new JLabel("");
         Image image1 = imageIcon.getImage().getScaledInstance(20, 20, 100);
         imageIcon = new ImageIcon(image1);
 
@@ -80,7 +84,9 @@ public class Search implements MouseListener, FocusListener {
         viewList.setBorder(emptyBorder);
         searchField.setBorder(emptyBorder);
 
+        panel1.setPreferredSize(new Dimension(400,40));
         search.setPreferredSize(new Dimension(90,30));
+        search.setBounds(300,10,90,30);
         add.setPreferredSize(new Dimension(55,30));
         remove.setPreferredSize(new Dimension(80,30));
         viewList.setPreferredSize(new Dimension(85,30));
@@ -100,9 +106,12 @@ public class Search implements MouseListener, FocusListener {
         panel1.add(empty);
         panel1.add(viewList);
         panel1.add(empty);
+        panel2.add(searchResult);
+
 
         //actionListener
         searchField.addFocusListener( this);
+        search.addActionListener(this);
         panel1.addMouseListener(this);
 
         //search panel
@@ -127,14 +136,15 @@ public class Search implements MouseListener, FocusListener {
         }
         scrollPane = new JScrollPane(panel);
         JPanel contentPane = new JPanel(null);
-        scrollPane.setBounds(75,20, 450, 450);
+        scrollPane.setBounds(75,50, 450, 450);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         contentPane.setPreferredSize(new Dimension(500,500));
         contentPane.add(scrollPane);
 
-        frame.add(new JPanel(), BorderLayout.NORTH);
-        frame.add(panel1, BorderLayout.CENTER);
+        panel2.setPreferredSize(new Dimension(400,200));
+        frame.add(panel1, BorderLayout.NORTH);
+        frame.add(panel2, BorderLayout.CENTER);
         frame.add(contentPane, BorderLayout.SOUTH);
         contentPane.setBackground(new Color(254, 250, 224));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -181,7 +191,9 @@ public class Search implements MouseListener, FocusListener {
     public void mousePressed(MouseEvent e) {    //connect link
         if(e.getSource() == panel1){
             panel1.requestFocusInWindow();
-        } else{
+        }
+
+        else{
             JButton src = (JButton) e.getSource();
             try{
                 Desktop.getDesktop().browse(new URL(findURL(src.getText())).toURI());
@@ -229,5 +241,44 @@ public class Search implements MouseListener, FocusListener {
     public void mouseClicked(MouseEvent e) {
 
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        searchResult.setText("");
+        String input = searchField.getText();
+        for(Character chr: input.toCharArray()){
+            if ((int) chr >9){
+                searchResult.setText("Invalid search");
+                searchResult.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+                searchResult.setForeground(new Color(255,24,24));
+                break;
+            } else if (input.length()<=2 && (Integer.parseInt(searchField.getText())>=1 && Integer.parseInt(searchField.getText())<=98)){
+                for(Unis uni: topSchools){
+                    if(uni.getName().indexOf(searchField.getText()+".")==0){
+                        searchResult.setText(uni.getName());
+                    }
+                }
+            }
+        }
+        if (input.length()<=2 && (Integer.parseInt(searchField.getText())>=1 && Integer.parseInt(searchField.getText())<=98)){
+            for(Unis uni: topSchools){
+                if(uni.getName().indexOf(searchField.getText()+".")==0){
+                    searchResult.setText(uni.getName());
+                }
+            }
+        } else if (input instanceof String) {
+            searchResult.setText("Invalid search");
+            searchResult.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+            searchResult.setForeground(new Color(255,24,24));
+        } else{
+            searchResult.setText("Invalid search");
+            searchResult.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+            searchResult.setForeground(new Color(255,24,24));
+        }
+
+        searchResult.setVisible(true);
+        searchResult.setBounds(100,100,100,30);
+    }
+
 
 }
