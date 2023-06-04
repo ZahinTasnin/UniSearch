@@ -25,18 +25,20 @@ public class Search implements MouseListener, FocusListener, ActionListener {
     private ArrayList<Unis> topSchools;
     private JPanel panel2;
     private  JLabel searchResult;
+    private JFrame listFrame;
+    private User user1;
 
 
 
-    public Search(){
+    public Search(User validUser){
 
+        user1 = validUser;
         //building frame
         frame = new JFrame("University Search");
         frame.setSize(600, 600);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
-
 
         //menu field initialization
         panel1 = new JPanel();
@@ -51,34 +53,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         Image image1 = imageIcon.getImage().getScaledInstance(20, 20, 100);
         imageIcon = new ImageIcon(image1);
 
-        //menu field button design
-        menuFieldDesign();
-
-        //menu field button size, location, & border
-        panel1.setBounds(0,0,600,50);
-        panel2.setBounds(0,50,600,40);
-        panel1.setBorder(new EmptyBorder(5,0,5,0));
-
-        //empty border
-        emptyBorder();
-
-        panel2.setBackground(Color.pink);
-        search.setPreferredSize(new Dimension(90,30));
-        search.setBounds(300,10,90,30);
-        add.setPreferredSize(new Dimension(55,30));
-        remove.setPreferredSize(new Dimension(80,30));
-        viewList.setPreferredSize(new Dimension(85,30));
-        searchField.setPreferredSize(new Dimension(150,30));
-
-        panel1.setLayout(null);
-
-
-        searchField.setBounds(75,10,120,30);
-        search.setBounds(206,10,85,30);
-        add.setBounds(298,10,45,30);
-        remove.setBounds(349,10,75,30);
-        viewList.setBounds(430,10,80,30);
-
+        frameTopDesign();         //menu field design
 
         panel1.add(searchField);
         panel1.add(search);
@@ -87,34 +62,19 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         panel1.add(viewList);
         panel2.add(searchResult);
 
-
         //actionListener
         searchField.addFocusListener( this);
+        add.addActionListener(this);
         search.addActionListener(this);
+        remove.addActionListener(this);
         panel1.addMouseListener(this);
+        viewList.addActionListener(this);
 
-        //search panel
-        panel = new JPanel(new GridLayout(98,1));
-        topSchools = top98();
+        buildScrollPanel();       //build the scroll panel with college list
 
-        for(int i= 0; i<topSchools.size(); i++){
-            school = new JButton(topSchools.get(i).getName());
-            school.setPreferredSize(new Dimension(400,40));
-            school.setHorizontalAlignment(JButton.LEFT);
-            school.setFocusable(false);
-            school.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
-            school.setVisible(true);
-            if(i%2==0){
-                school.setBackground(new Color(204, 213, 174));
-            } else{
-                school.setBackground(new Color(233, 237, 201));
-            }
-            panel.add(school);
-            school.addMouseListener(this);
-        }
         scrollPane = new JScrollPane(panel);
         JPanel contentPane = new JPanel(null);
-        scrollPane.setBounds(75,50, 450, 440);
+        scrollPane.setBounds(75,20, 450, 450);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         contentPane.setPreferredSize(new Dimension(500,500));
@@ -131,9 +91,241 @@ public class Search implements MouseListener, FocusListener, ActionListener {
 
     }
 
-    public static void main(String[]args){
-        new Search();
+
+
+    private String findURL(String name){
+        for(int i = 0; i<topSchools.size(); i++){
+            if(topSchools.get(i).getName().equals(name)){
+                return topSchools.get(i).getURL();
+            }
+        } return "";
     }
+
+    public void mousePressed(MouseEvent e) {    //connect link
+        if(e.getSource() == panel1){
+            panel1.requestFocusInWindow();
+        } else{
+            JButton src = (JButton) e.getSource();
+            try{
+                Desktop.getDesktop().browse(new URL(findURL(src.getText())).toURI());
+            }
+            catch (Exception f)
+            {}
+        }
+    }
+
+    public void focusGained(FocusEvent e) {             //enter number vanishes
+        if (searchField.getText().equals("Enter number")) {
+            searchField.setForeground(Color.black);
+            searchField.setText("");
+        }
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {               //enter number appears
+        if(searchField.getText().isEmpty()) {
+            searchField.setText("Enter number");
+            searchField.setForeground(Color.GRAY);
+        }
+    }
+
+
+
+
+
+
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==search){
+            actionForSearchButton();
+        } else if(e.getSource()==add){
+            actionForAddButton();
+        } else if(e.getSource()==remove){
+            actionForRemoveButton();
+        } else if (e.getSource()==viewList){
+            actionForViewList();
+        }
+    }
+
+    //actionPerformed for search button
+    private void actionForSearchButton(){
+        searchResult.setFont(new Font("Georgia", Font.ITALIC, 15));
+        searchResult.setText("");
+        String input = searchField.getText();
+        if(!checkValid(input)){
+            searchResult.setText("Invalid search");
+            searchResult.setForeground(new Color(255,24,24));
+        } else if ((Integer.parseInt(searchField.getText())>=0 && Integer.parseInt(searchField.getText())<=98)){
+            searchResult.setForeground(new Color(0,0,0));
+            for(Unis uni: topSchools){
+                int num = Integer.parseInt(searchField.getText());
+                if(uni.getName().indexOf(num+".")==0){
+                    searchResult.setText(uni.getName());
+                }
+            }
+        }
+    }
+
+    //actionPerformed for add button
+    private void actionForAddButton(){
+        searchResult.setFont(new Font("Georgia", Font.ITALIC, 15));
+        searchResult.setText("");
+        String input = searchField.getText();
+        if(!checkValid(input)){
+            searchResult.setText("Invalid search");
+            searchResult.setForeground(new Color(255,24,24));
+        } else if ((Integer.parseInt(searchField.getText())>=0 && Integer.parseInt(searchField.getText())<=98)){
+            for(Unis uni: topSchools){
+                int num = Integer.parseInt(searchField.getText());
+                if(user1.checkDuplicates(uni)>-1){
+                    searchResult.setForeground(new Color(255,24,24));
+                    searchResult.setText("University has already been added!!!");
+                } else if(uni.getName().indexOf(num+".")==0 && user1.checkDuplicates(uni)==-1){
+                    searchResult.setForeground(new Color(40, 100, 10));
+                    searchResult.setText("University added successfully!!!");
+                    System.out.println(uni.getName());
+                    user1.addUni(uni);
+                    break;
+                }
+            }
+        }
+    }
+
+    //actionPerformed for remove button
+    private void actionForRemoveButton(){
+        searchResult.setFont(new Font("Georgia", Font.ITALIC, 15));
+        searchResult.setText("");
+        String input = searchField.getText();
+        if(!checkValid(input)){
+            searchResult.setText("Invalid search");
+            searchResult.setForeground(new Color(255,24,24));
+        } else if ((Integer.parseInt(searchField.getText())>=0 && Integer.parseInt(searchField.getText())<=98)){
+            for(int i=0; i<topSchools.size();i++){
+                Unis uni = topSchools.get(i);
+                int num = Integer.parseInt(searchField.getText());
+                if(uni.getName().indexOf(num+".")==0 && user1.checkDuplicates(uni)>-1){
+                    searchResult.setForeground(new Color(40, 100, 10));
+                    searchResult.setText("University removed successfully!!!");
+                    System.out.println(uni.getName());
+                    user1.removeUni(uni);
+                    break;
+                } else{
+                    searchResult.setForeground(new Color(255,24,24));
+                    searchResult.setText("List doesn't contain university!!!");
+                }
+            }
+        }
+    }
+
+    //actionPerformed for viewList button
+    private void actionForViewList(){
+        listFrame = new JFrame();
+        listFrame.setTitle(user1.getName() + "'s College List");
+        listFrame.setSize(400, 400);
+        listFrame.setLocationRelativeTo(frame);
+        listFrame.setResizable(false);
+        listFrame.setLayout(null);
+
+        JButton empty = new JButton("No school has been added yet!!!");
+        empty.setPreferredSize(new Dimension(700,25));
+        empty.setHorizontalAlignment(JButton.LEFT);
+        empty.setFocusable(false);
+        empty.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        JPanel viewListPanel = new JPanel(new GridLayout(user1.uniList().size(), 1));
+        viewListPanel.add(empty);
+        for(int i = 0; i<user1.uniList().size(); i++){
+            viewListPanel.remove(empty);
+            JButton interestSchool = new JButton(user1.uniList().get(i).getName());
+            interestSchool.setPreferredSize(new Dimension(700,25));
+            interestSchool.setHorizontalAlignment(JButton.LEFT);
+            interestSchool.setFocusable(false);
+            interestSchool.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+            interestSchool.setVisible(true);
+            viewListPanel.add(interestSchool);
+            interestSchool.addMouseListener(this);
+        }
+
+        JScrollPane listScroll = new JScrollPane(viewListPanel);
+        listScroll.setBounds(10,10,370,380);
+        listScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        listScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        JPanel listContentPane = new JPanel();
+        listContentPane.setBounds(10,10,380,380);
+        listContentPane.add(listScroll);
+        listFrame.add(listContentPane);
+        listFrame.setVisible(true);
+        listFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    //check if search field input is valid
+    private boolean checkValid(String search){
+        for(Character chr: search.toCharArray()){
+            int ascii = chr;
+            if (ascii<47 || ascii>58){
+                return false;
+            }
+        }
+        if(Integer.parseInt(search)>98){
+            return false;
+        }
+        return true;
+    }
+
+    //menu field button design
+    private void frameTopDesign(){
+
+        //panel setup
+        panel1.setLayout(null);
+        panel1.setBounds(0,0,600,45);
+        panel2.setBounds(0,45,600,35);
+        panel1.setBorder(new EmptyBorder(5,0,5,0));
+
+        //font type and size
+        search.setFont(new Font("Serif", Font.PLAIN, 18));
+        add.setFont(new Font("Serif", Font.PLAIN, 18));
+        remove.setFont(new Font("Serif", Font.PLAIN, 18));
+        viewList.setFont(new Font("Serif", Font.PLAIN, 18));
+        searchField.setFont(new Font("Serif", Font.PLAIN, 18));
+
+        //font color
+        search.setForeground(Color.white);
+        add.setForeground(Color.white);
+        remove.setForeground(Color.white);
+        viewList.setForeground(Color.white);
+        searchField.setForeground(Color.GRAY);
+
+        //button background color
+        search.setBackground(new Color(212, 163, 115));
+        remove.setBackground(new Color(212, 163, 115));
+        viewList.setBackground(new Color(212, 163, 115));
+        add.setBackground(new Color(212, 163, 115));
+
+        //set focusable to false;
+        search.setIcon(imageIcon);
+        search.setFocusable(false);
+        add.setFocusable(false);
+        remove.setFocusable(false);
+        viewList.setFocusable(false);
+
+        //empty border
+        Border emptyBorder = BorderFactory.createEmptyBorder();
+        search.setBorder(emptyBorder);
+        add.setBorder(emptyBorder);
+        remove.setBorder(emptyBorder);
+        viewList.setBorder(emptyBorder);
+        searchField.setBorder(emptyBorder);
+
+        //set bounds
+        searchField.setBounds(75,10,110,30);
+        search.setBounds(222,10,85,30);
+        add.setBounds(313,10,40,30);
+        remove.setBounds(359,10,75,30);
+        viewList.setBounds(440,10,80,30);
+    }
+
+    //build the school list from csv file
     private ArrayList<Unis> top98(){
         ArrayList<Unis> unisArrayList = new ArrayList<Unis>();
         String fileName = "src\\top98.csv";
@@ -158,127 +350,27 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         return unisArrayList;
     }
 
-    private String findURL(String name){
-        for(int i = 0; i<top98().size(); i++){
-            if(top98().get(i).getName().equals(name)){
-                return top98().get(i).getURL();
+    //build the scroll panel with college list
+    private void buildScrollPanel(){
+        panel = new JPanel(new GridLayout(98,1));
+        topSchools = top98();
+
+        for(int i= 0; i<topSchools.size(); i++){
+            school = new JButton(topSchools.get(i).getName());
+            school.setPreferredSize(new Dimension(700,40));
+            school.setHorizontalAlignment(JButton.LEFT);
+            school.setFocusable(false);
+            school.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
+            school.setVisible(true);
+            if(i%2==0){
+                school.setBackground(new Color(204, 213, 174));
+            } else{
+                school.setBackground(new Color(233, 237, 201));
             }
-        } return "";
-    }
-
-    public void mousePressed(MouseEvent e) {    //connect link
-        if(e.getSource() == panel1){
-            panel1.requestFocusInWindow();
-        }
-
-        else{
-            JButton src = (JButton) e.getSource();
-            try{
-                Desktop.getDesktop().browse(new URL(findURL(src.getText())).toURI());
-            }
-            catch (Exception f)
-            {}
+            panel.add(school);
+            school.addMouseListener(this);
         }
     }
-
-    public void focusGained(FocusEvent e)
-    {
-        if (searchField.getText().equals("Enter number")) {
-            searchField.setForeground(Color.black);
-            searchField.setText("");
-
-        }
-    }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-        if (searchField.getText().isEmpty()) {
-            searchField.setText("Enter number");
-            searchField.setForeground(Color.GRAY);
-        }
-    }
-
-
-
-
-
-
-
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        searchResult.setFont(new Font("Georgia", Font.BOLD|Font.ITALIC, 15));
-        searchResult.setText("");
-        String input = searchField.getText();
-        if(!checkValid(input)){
-            searchResult.setText("Invalid search");
-            searchResult.setForeground(new Color(255,24,24));
-        } else if ((Integer.parseInt(searchField.getText())>=0 && Integer.parseInt(searchField.getText())<=98)){
-            searchResult.setForeground(new Color(0,0,0));
-            for(Unis uni: topSchools){
-                int num = Integer.parseInt(searchField.getText());
-                if(uni.getName().indexOf(num+".")==0){
-                    searchResult.setText(uni.getName());
-                }
-            }
-        }
-
-        searchResult.setVisible(true);
-        searchResult.setBounds(100,100,100,30);
-    }
-
-    //check if search field input is valid
-    private boolean checkValid(String search){
-        for(Character chr: search.toCharArray()){
-            int ascii = chr;
-            if (ascii<47 || ascii>58){
-                return false;
-            }
-        }
-        if(Integer.parseInt(search)>98){
-            return false;
-        }
-        return true;
-    }
-
-    //menu field button design
-    private void menuFieldDesign(){
-        search.setFont(new Font("Serif", Font.PLAIN, 18));
-        add.setFont(new Font("Serif", Font.PLAIN, 18));
-        remove.setFont(new Font("Serif", Font.PLAIN, 18));
-        viewList.setFont(new Font("Serif", Font.PLAIN, 18));
-        searchField.setFont(new Font("Serif", Font.PLAIN, 18));
-
-        search.setForeground(Color.white);
-        add.setForeground(Color.white);
-        remove.setForeground(Color.white);
-        viewList.setForeground(Color.white);
-        searchField.setForeground(Color.GRAY);
-
-        search.setBackground(new Color(212, 163, 115));
-        remove.setBackground(new Color(212, 163, 115));
-        viewList.setBackground(new Color(212, 163, 115));
-        add.setBackground(new Color(212, 163, 115));
-
-        search.setIcon(imageIcon);
-        search.setFocusable(false);
-        add.setFocusable(false);
-        remove.setFocusable(false);
-        viewList.setFocusable(false);
-    }
-
-    //empty border
-    private void emptyBorder(){
-        Border emptyBorder = BorderFactory.createEmptyBorder();
-        search.setBorder(emptyBorder);
-        add.setBorder(emptyBorder);
-        remove.setBorder(emptyBorder);
-        viewList.setBorder(emptyBorder);
-        searchField.setBorder(emptyBorder);
-    }
-
-
-
 
 
 
