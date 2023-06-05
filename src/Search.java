@@ -28,7 +28,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
     private JFrame listFrame;
     private User user1;
 
-    private JScrollPane listScroll;
+
 
     public Search(User validUser){
 
@@ -221,9 +221,6 @@ public class Search implements MouseListener, FocusListener, ActionListener {
 
     //actionPerformed for viewList button
     private void actionForViewList(){
-        if(listFrame != null) {
-            listFrame.dispose();
-        }
         listFrame = new JFrame();
         listFrame.setTitle(user1.getName() + "'s College List");
         listFrame.setSize(400, 400);
@@ -236,17 +233,12 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         empty.setHorizontalAlignment(JButton.LEFT);
         empty.setFocusable(false);
         empty.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        JPanel viewListPanel = new JPanel(new GridLayout(8, 1));
-        if(user1.uniList().size()>8){
-            viewListPanel = new JPanel(new GridLayout(user1.uniList().size(),1));
-        }
+        JPanel viewListPanel = new JPanel(new GridLayout(user1.uniList().size(), 1));
         viewListPanel.add(empty);
-
-
         for(int i = 0; i<user1.uniList().size(); i++){
             viewListPanel.remove(empty);
             JButton interestSchool = new JButton(user1.uniList().get(i).getName());
-            interestSchool.setPreferredSize(new Dimension(500,25));
+            interestSchool.setPreferredSize(new Dimension(700,25));
             interestSchool.setHorizontalAlignment(JButton.LEFT);
             interestSchool.setFocusable(false);
             interestSchool.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
@@ -254,14 +246,13 @@ public class Search implements MouseListener, FocusListener, ActionListener {
             viewListPanel.add(interestSchool);
             interestSchool.addMouseListener(this);
         }
-        listScroll = new JScrollPane(viewListPanel);
-        listScroll.setBounds(0,0,360,355);
+
+        JScrollPane listScroll = new JScrollPane(viewListPanel);
+        listScroll.setBounds(10,10,370,380);
         listScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         listScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-
-        JPanel listContentPane = new JPanel(null);
-        listContentPane.setBounds(05,05,380,350);
+        JPanel listContentPane = new JPanel();
+        listContentPane.setBounds(10,10,380,380);
         listContentPane.add(listScroll);
         listFrame.add(listContentPane);
         listFrame.setVisible(true);

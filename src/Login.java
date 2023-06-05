@@ -37,20 +37,21 @@ public class Login {
         passwordField = new JPasswordField();
         userList = new ArrayList<User>();
         userList.add(new User("z","1"));
+        userList.add(new User("h", "2"));
         Border empty = BorderFactory.createEmptyBorder();
 
         //font, style, size
         user.setFont(new Font("Serif", Font.BOLD, 23));
-        user.setForeground(new Color(203, 153, 126));
+        user.setForeground(new Color(45, 48, 71));
         password.setFont(new Font("Serif", Font.BOLD, 23));
-        password.setForeground(new Color(203, 153, 126));
+        password.setForeground(new Color(45, 48, 71));
         logIn.setFont(new Font("Serif", Font.ITALIC|Font.BOLD, 18));
         logIn.setForeground(Color.WHITE);
-        logIn.setBackground(new Color(203, 153, 126));
+        logIn.setBackground(new Color(45, 48, 71));
         logIn.setBorder(empty);
         signUp.setFont(new Font("Serif", Font.ITALIC|Font.BOLD, 18));
         signUp.setForeground(Color.WHITE);
-        signUp.setBackground(new Color(203, 153, 126));
+        signUp.setBackground(new Color(45, 48, 71));
         signUp.setBorder(empty);
         userName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         userName.setBorder(BorderFactory.createEmptyBorder(1,5,1,1));
@@ -66,7 +67,7 @@ public class Login {
         panel.add(passwordField);
         panel.add(logIn);
         panel.add(signUp);
-        panel.setBackground(new Color(240, 239, 235));
+        panel.setBackground(new Color(255, 213, 194));
 
         //button responding
         signUp.addActionListener(this::actionPerformed);
