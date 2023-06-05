@@ -84,12 +84,12 @@ public class Login {
         signUp.setBounds(20, 20, 120, 30);
 
         //location
-        user.setLocation(50,100);
-        password.setLocation(50, 200);
-        userName.setLocation(220, 100);
-        passwordField.setLocation(220, 200);
-        logIn.setLocation(100, 300);
-        signUp.setLocation(350, 300);
+        user.setLocation(50,120);
+        password.setLocation(50, 220);
+        userName.setLocation(220, 120);
+        passwordField.setLocation(220, 220);
+        logIn.setLocation(100, 310);
+        signUp.setLocation(350, 310);
 
 
         frame.add(panel);
