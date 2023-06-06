@@ -84,7 +84,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         frame.add(panel1, BorderLayout.NORTH);
         frame.add(panel2, BorderLayout.CENTER);
         frame.add(contentPane, BorderLayout.SOUTH);
-        contentPane.setBackground(new Color(254, 250, 224));
+        contentPane.setBackground(new Color(255, 246, 225));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.requestFocusInWindow();
@@ -116,7 +116,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
 
     public void focusGained(FocusEvent e) {             //enter number vanishes
         if (searchField.getText().equals("Enter number")) {
-            searchField.setForeground(Color.black);
+            searchField.setForeground(new Color(251, 244, 229));
             searchField.setText("");
         }
     }
@@ -125,7 +125,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
     public void focusLost(FocusEvent e) {               //enter number appears
         if(searchField.getText().isEmpty()) {
             searchField.setText("Enter number");
-            searchField.setForeground(Color.GRAY);
+            searchField.setForeground(new Color(217, 178, 133));
         }
     }
 
@@ -198,7 +198,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         searchResult.setFont(new Font("Georgia", Font.ITALIC, 15));
         searchResult.setText("");
         String input = searchField.getText();
-        if(!checkValid(input)){
+        if(!checkValid(input) || input==""){
             searchResult.setText("Invalid search");
             searchResult.setForeground(new Color(255,24,24));
         } else if ((Integer.parseInt(searchField.getText())>=0 && Integer.parseInt(searchField.getText())<=98)){
@@ -270,6 +270,9 @@ public class Search implements MouseListener, FocusListener, ActionListener {
 
     //check if search field input is valid
     private boolean checkValid(String search){
+        if(searchField.getText().isEmpty()){
+            return false;
+        }
         for(Character chr: search.toCharArray()){
             int ascii = chr;
             if (ascii<47 || ascii>58){
@@ -299,17 +302,20 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         searchField.setFont(new Font("Serif", Font.PLAIN, 18));
 
         //font color
-        search.setForeground(Color.white);
-        add.setForeground(Color.white);
-        remove.setForeground(Color.white);
-        viewList.setForeground(Color.white);
-        searchField.setForeground(Color.GRAY);
+        search.setForeground(new Color(251, 244, 229));
+        add.setForeground(new Color(251, 244, 229));
+        remove.setForeground(new Color(251, 244, 229));
+        viewList.setForeground(new Color(251, 244, 229));
+        searchField.setForeground(new Color(251, 244, 229));
 
-        //button background color
-        search.setBackground(new Color(212, 163, 115));
-        remove.setBackground(new Color(212, 163, 115));
-        viewList.setBackground(new Color(212, 163, 115));
-        add.setBackground(new Color(212, 163, 115));
+        //button and panel background color
+        search.setBackground(new Color(199, 138, 73));
+        remove.setBackground(new Color(199, 138, 73));
+        viewList.setBackground(new Color(199, 138, 73));
+        add.setBackground(new Color(199, 138, 73));
+        searchField.setBackground(new Color(199, 138, 73));
+        panel1.setBackground(new Color(255, 246, 225));
+        panel2.setBackground(new Color(255, 246, 225));
 
         //set focusable to false;
         search.setIcon(imageIcon);
@@ -372,9 +378,9 @@ public class Search implements MouseListener, FocusListener, ActionListener {
             school.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
             school.setVisible(true);
             if(i%2==0){
-                school.setBackground(new Color(204, 213, 174));
+                school.setBackground(new Color(238, 215, 163));
             } else{
-                school.setBackground(new Color(233, 237, 201));
+                school.setBackground(new Color(216, 203, 168));
             }
             panel.add(school);
             school.addMouseListener(this);

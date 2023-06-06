@@ -42,16 +42,16 @@ public class Login {
 
         //font, style, size
         user.setFont(new Font("Serif", Font.BOLD, 23));
-        user.setForeground(new Color(45, 48, 71));
+        user.setForeground(new Color(199, 138, 73));
         password.setFont(new Font("Serif", Font.BOLD, 23));
-        password.setForeground(new Color(45, 48, 71));
+        password.setForeground(new Color(199, 138, 73));
         logIn.setFont(new Font("Serif", Font.ITALIC|Font.BOLD, 18));
         logIn.setForeground(Color.WHITE);
-        logIn.setBackground(new Color(45, 48, 71));
+        logIn.setBackground(new Color(199, 138, 73));
         logIn.setBorder(empty);
         signUp.setFont(new Font("Serif", Font.ITALIC|Font.BOLD, 18));
         signUp.setForeground(Color.WHITE);
-        signUp.setBackground(new Color(45, 48, 71));
+        signUp.setBackground(new Color(199, 138, 73));
         signUp.setBorder(empty);
         userName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         userName.setBorder(BorderFactory.createEmptyBorder(1,5,1,1));
@@ -67,7 +67,7 @@ public class Login {
         panel.add(passwordField);
         panel.add(logIn);
         panel.add(signUp);
-        panel.setBackground(new Color(255, 213, 194));
+        panel.setBackground(new Color(255, 246, 225));
 
         //button responding
         signUp.addActionListener(this::actionPerformed);
@@ -84,12 +84,12 @@ public class Login {
         signUp.setBounds(20, 20, 120, 30);
 
         //location
-        user.setLocation(50,120);
-        password.setLocation(50, 220);
-        userName.setLocation(220, 120);
-        passwordField.setLocation(220, 220);
-        logIn.setLocation(100, 310);
-        signUp.setLocation(350, 310);
+        user.setLocation(50,115);
+        password.setLocation(50, 215);
+        userName.setLocation(220, 115);
+        passwordField.setLocation(220, 215);
+        logIn.setLocation(100, 295);
+        signUp.setLocation(350, 295);
 
 
         frame.add(panel);
@@ -126,7 +126,7 @@ public class Login {
                 success.setIcon(image);
                 success.setHorizontalTextPosition(JLabel.RIGHT);
                 success.setForeground(new Color(40, 100, 10));
-                success.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 25));
+                success.setFont(new Font("Serif", Font.BOLD, 20));
                 Thread thread = new Thread(() -> {
                     try {
                         Thread.sleep(3000);
@@ -146,7 +146,7 @@ public class Login {
                 success.setIcon(image);
 
                 success.setForeground(new Color(250, 30, 50));
-                success.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 25));
+                success.setFont(new Font("Serif", Font.BOLD, 20));
 
                 Thread thread = new Thread(() -> {
                     try {
@@ -186,7 +186,7 @@ public class Login {
                 success.setIcon(image);
 
                 success.setForeground(new Color(250, 30, 50));
-                success.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 30));
+                success.setFont(new Font("Serif", Font.BOLD, 20));
 
                 Thread thread = new Thread(() -> {
                     try {
