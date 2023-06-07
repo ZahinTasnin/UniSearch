@@ -15,6 +15,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
     private JButton add;
     private JButton remove;
     private JButton viewList;
+    private JButton exit;
     private JTextField searchField;
     private ImageIcon imageIcon;
     private JFrame frame;
@@ -47,7 +48,8 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         add = new JButton (" Add");
         remove = new JButton(" Remove");
         viewList = new JButton(" View List");
-        searchField = new JTextField("Enter number");
+        exit = new JButton("Exit");
+        searchField = new JTextField("Enter #");
         imageIcon = new ImageIcon("search.png.png");
         searchResult = new JLabel("");
         Image image1 = imageIcon.getImage().getScaledInstance(20, 20, 100);
@@ -60,13 +62,16 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         panel1.add(add);
         panel1.add(remove);
         panel1.add(viewList);
+        panel1.add(exit);
         panel2.add(searchResult);
+
 
         //actionListener
         searchField.addFocusListener( this);
         add.addActionListener(this);
         search.addActionListener(this);
         remove.addActionListener(this);
+        exit.addActionListener(this);
         panel1.addMouseListener(this);
         viewList.addActionListener(this);
 
@@ -115,8 +120,8 @@ public class Search implements MouseListener, FocusListener, ActionListener {
     }
 
     public void focusGained(FocusEvent e) {             //enter number vanishes
-        if (searchField.getText().equals("Enter number")) {
-            searchField.setForeground(new Color(251, 244, 229));
+        if (searchField.getText().equals("Enter #")) {
+            searchField.setForeground(new Color(248, 244, 244));
             searchField.setText("");
         }
     }
@@ -124,8 +129,8 @@ public class Search implements MouseListener, FocusListener, ActionListener {
     @Override
     public void focusLost(FocusEvent e) {               //enter number appears
         if(searchField.getText().isEmpty()) {
-            searchField.setText("Enter number");
-            searchField.setForeground(new Color(217, 178, 133));
+            searchField.setText("Enter #");
+            searchField.setForeground(new Color(248, 244, 244));
         }
     }
 
@@ -146,6 +151,8 @@ public class Search implements MouseListener, FocusListener, ActionListener {
             actionForRemoveButton();
         } else if (e.getSource()==viewList){
             actionForViewList();
+        } else if (e.getSource()==exit) {
+            actionFromExitButton();
         }
     }
 
@@ -177,18 +184,22 @@ public class Search implements MouseListener, FocusListener, ActionListener {
             searchResult.setText("Invalid search");
             searchResult.setForeground(new Color(255,24,24));
         } else if ((Integer.parseInt(searchField.getText())>=0 && Integer.parseInt(searchField.getText())<=98)){
-            for(Unis uni: topSchools){
-                int num = Integer.parseInt(searchField.getText());
-                if(user1.checkDuplicates(uni)>-1){
-                    searchResult.setForeground(new Color(255,24,24));
-                    searchResult.setText("University has already been added!!!");
-                } else if(uni.getName().indexOf(num+".")==0 && user1.checkDuplicates(uni)==-1){
-                    searchResult.setForeground(new Color(40, 100, 10));
-                    searchResult.setText("University added successfully!!!");
-                    System.out.println(uni.getName());
-                    user1.addUni(uni);
-                    break;
+            if (user1.uniList().size() <= 9) {
+                for(Unis uni: topSchools) {
+                    int num = Integer.parseInt(searchField.getText());
+                    if (user1.checkDuplicates(uni) > -1) {
+                        searchResult.setForeground(new Color(255, 24, 24));
+                        searchResult.setText("University has already been added!!!");
+                    } else if (uni.getName().indexOf(num + ".") == 0 && user1.checkDuplicates(uni) == -1) {
+                        searchResult.setForeground(new Color(40, 100, 10));
+                        searchResult.setText("University added successfully!!!");
+                        System.out.println(uni.getName());
+                        user1.addUni(uni);
+                        break;
+                    }
                 }
+            } else {
+                searchResult.setText("Maximum colleges reached");
             }
         }
     }
@@ -255,9 +266,8 @@ public class Search implements MouseListener, FocusListener, ActionListener {
             interestSchool.addMouseListener(this);
         }
         listScroll = new JScrollPane(viewListPanel);
-        listScroll.setBounds(0,0,360,355);
+        listScroll.setBounds(0,0,378,355);
         listScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        listScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 
         JPanel listContentPane = new JPanel(null);
@@ -266,6 +276,12 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         listFrame.add(listContentPane);
         listFrame.setVisible(true);
         listFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+
+    private void actionFromExitButton() {
+        frame.dispose();
+        listFrame.dispose();
     }
 
     //check if search field input is valid
@@ -300,6 +316,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         remove.setFont(new Font("Serif", Font.PLAIN, 18));
         viewList.setFont(new Font("Serif", Font.PLAIN, 18));
         searchField.setFont(new Font("Serif", Font.PLAIN, 18));
+        exit.setFont(new Font("Serif", Font.PLAIN, 18));
 
         //font color
         search.setForeground(new Color(251, 244, 229));
@@ -307,12 +324,16 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         remove.setForeground(new Color(251, 244, 229));
         viewList.setForeground(new Color(251, 244, 229));
         searchField.setForeground(new Color(251, 244, 229));
+        exit.setForeground(new Color(251, 244, 229));
+
 
         //button and panel background color
         search.setBackground(new Color(199, 138, 73));
         remove.setBackground(new Color(199, 138, 73));
         viewList.setBackground(new Color(199, 138, 73));
         add.setBackground(new Color(199, 138, 73));
+        remove.setBackground(new Color(199, 138, 73));
+        exit.setBackground(new Color(199, 138, 73));
         searchField.setBackground(new Color(199, 138, 73));
         panel1.setBackground(new Color(255, 246, 225));
         panel2.setBackground(new Color(255, 246, 225));
@@ -323,6 +344,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         add.setFocusable(false);
         remove.setFocusable(false);
         viewList.setFocusable(false);
+        exit.setFocusable(false);
 
         //empty border
         Border emptyBorder = BorderFactory.createEmptyBorder();
@@ -331,13 +353,15 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         remove.setBorder(emptyBorder);
         viewList.setBorder(emptyBorder);
         searchField.setBorder(emptyBorder);
+        exit.setBorder(emptyBorder);
 
         //set bounds
-        searchField.setBounds(75,10,110,30);
-        search.setBounds(222,10,85,30);
-        add.setBounds(313,10,40,30);
-        remove.setBounds(359,10,75,30);
-        viewList.setBounds(440,10,80,30);
+        searchField.setBounds(75,10,72,30);
+        search.setBounds(157,10,87,30);
+        add.setBounds(252,10,47,30);
+        remove.setBounds(307,10,72,30);
+        viewList.setBounds(387,10,82,30);
+        exit.setBounds(477, 10, 47, 30);
     }
 
     //build the school list from csv file

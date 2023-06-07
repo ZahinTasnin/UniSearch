@@ -17,10 +17,8 @@ public class Login {
     private JPasswordField passwordField;
     private static ArrayList<User> userList;
 
-    private User validUser;
     public Login(){
 
-        validUser = new User("","");
         //frame
         frame = new JFrame();
         frame.setTitle("UniSearch");
@@ -98,6 +96,7 @@ public class Login {
     }
 
     public void actionPerformed(ActionEvent event) {
+        User validUser = new User("","");
         signUp.setVisible(false);
         logIn.setVisible(false);
         JButton src = (JButton) event.getSource();
@@ -162,20 +161,19 @@ public class Login {
             }
             userName.setText("");
             passwordField.setText("");
-        } else if (src.getText().equals("LOGIN")) {     //login attempt
+        } else if (src.getText().equals("LOGIN")) {//login attempt
             logIn.setVisible(false);
             String name = userName.getText();
-            validUser.setName(name);
             char[] password1 = passwordField.getPassword();
             String password = "";
             for(int i = 0; i<password1.length; i++){
                 password+=password1[i];
             }
-            validUser.setPassword(password);
             boolean add1 = false;
             for (User user2 : userList) {
                 if (user2.getName().equals(name) && user2.getPassword().equals(password)) {
                     add1 = true;
+                    validUser=user2;
                 }
             }
             if (add1==false) {
@@ -205,13 +203,14 @@ public class Login {
                 success.setText("Successful. LOADING........");
                 success.setForeground(new Color(40, 100, 10));
                 success.setFont(new Font("Serif", Font.BOLD, 20));
+                User finalValidUser = validUser;
                 Thread thread = new Thread(() -> {
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    new Search(validUser);
+                    new Search(finalValidUser);
                     success.setVisible(false);
                     logIn.setVisible(true);
                     signUp.setVisible(true);
