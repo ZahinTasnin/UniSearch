@@ -1,12 +1,5 @@
-import javax.swing.*;
-
 public class Main {
-
-    private JFrame frame = new JFrame();
-    private JButton add = new JButton();
-    private JButton remove = new JButton();
-
-    public Main(){
-
+    public static void main(String[]args){
+        Login login = new Login();
     }
 }

@@ -40,6 +40,8 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
+        ImageIcon icon= new ImageIcon("university.png");
+        frame.setIconImage(icon.getImage());
 
         //menu field initialization
         panel1 = new JPanel();
@@ -65,7 +67,6 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         panel1.add(exit);
         panel2.add(searchResult);
 
-
         //actionListener
         searchField.addFocusListener( this);
         add.addActionListener(this);
@@ -89,14 +90,13 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         frame.add(panel1, BorderLayout.NORTH);
         frame.add(panel2, BorderLayout.CENTER);
         frame.add(contentPane, BorderLayout.SOUTH);
-        contentPane.setBackground(new Color(255, 246, 225));
+        contentPane.setBackground(new Color(246, 238, 233));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.requestFocusInWindow();
 
     }
-
-
 
     private String findURL(String name){
         for(int i = 0; i<topSchools.size(); i++){
@@ -118,30 +118,6 @@ public class Search implements MouseListener, FocusListener, ActionListener {
             {}
         }
     }
-
-    public void focusGained(FocusEvent e) {             //enter number vanishes
-        if (searchField.getText().equals("Enter #")) {
-            searchField.setForeground(new Color(248, 244, 244));
-            searchField.setText("");
-        }
-    }
-
-    @Override
-    public void focusLost(FocusEvent e) {               //enter number appears
-        if(searchField.getText().isEmpty()) {
-            searchField.setText("Enter #");
-            searchField.setForeground(new Color(248, 244, 244));
-        }
-    }
-
-
-
-
-
-
-
-
-    @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==search){
             actionForSearchButton();
@@ -153,6 +129,25 @@ public class Search implements MouseListener, FocusListener, ActionListener {
             actionForViewList();
         } else if (e.getSource()==exit) {
             actionFromExitButton();
+        }
+    }
+
+
+
+    //enter number vanishes from searchField
+    public void focusGained(FocusEvent e) {
+        if (searchField.getText().equals("Enter #")) {
+            searchField.setForeground(new Color(248, 244, 244));
+            searchField.setText("");
+        }
+    }
+
+    //enter number appears in searchField
+    @Override
+    public void focusLost(FocusEvent e) {
+        if(searchField.getText().isEmpty()) {
+            searchField.setText("Enter #");
+            searchField.setForeground(new Color(248, 244, 244));
         }
     }
 
@@ -241,6 +236,8 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         listFrame.setLocationRelativeTo(frame);
         listFrame.setResizable(false);
         listFrame.setLayout(null);
+        ImageIcon icon= new ImageIcon("university.png");
+        listFrame.setIconImage(icon.getImage());
 
         JButton empty = new JButton("No school has been added yet!!!");
         empty.setPreferredSize(new Dimension(700,25));
@@ -261,6 +258,12 @@ public class Search implements MouseListener, FocusListener, ActionListener {
             interestSchool.setHorizontalAlignment(JButton.LEFT);
             interestSchool.setFocusable(false);
             interestSchool.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+            interestSchool.setForeground(Color.WHITE);
+            if(i%2==0){
+                interestSchool.setBackground(new Color(107, 112, 92));
+            } else{
+                interestSchool.setBackground(new Color(185, 139, 115));
+            }
             interestSchool.setVisible(true);
             viewListPanel.add(interestSchool);
             interestSchool.addMouseListener(this);
@@ -278,7 +281,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         listFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-
+    //actionPerformed for exit button
     private void actionFromExitButton() {
         frame.dispose();
         listFrame.dispose();
@@ -328,15 +331,15 @@ public class Search implements MouseListener, FocusListener, ActionListener {
 
 
         //button and panel background color
-        search.setBackground(new Color(199, 138, 73));
-        remove.setBackground(new Color(199, 138, 73));
-        viewList.setBackground(new Color(199, 138, 73));
-        add.setBackground(new Color(199, 138, 73));
-        remove.setBackground(new Color(199, 138, 73));
-        exit.setBackground(new Color(199, 138, 73));
-        searchField.setBackground(new Color(199, 138, 73));
-        panel1.setBackground(new Color(255, 246, 225));
-        panel2.setBackground(new Color(255, 246, 225));
+        search.setBackground(new Color(185, 139, 115));
+        remove.setBackground(new Color(185, 139, 115));
+        viewList.setBackground(new Color(185, 139, 115));
+        add.setBackground(new Color(185, 139, 115));
+        remove.setBackground(new Color(185, 139, 115));
+        exit.setBackground(new Color(185, 139, 115));
+        searchField.setBackground(new Color(185, 139, 115));
+        panel1.setBackground(new Color(246, 238, 233));
+        panel2.setBackground(new Color(246, 238, 233));
 
         //set focusable to false;
         search.setIcon(imageIcon);
@@ -402,9 +405,9 @@ public class Search implements MouseListener, FocusListener, ActionListener {
             school.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
             school.setVisible(true);
             if(i%2==0){
-                school.setBackground(new Color(238, 215, 163));
+                school.setBackground(new Color(238, 222, 211));
             } else{
-                school.setBackground(new Color(216, 203, 168));
+                school.setBackground(new Color(223, 223, 214));
             }
             panel.add(school);
             school.addMouseListener(this);
@@ -415,21 +418,16 @@ public class Search implements MouseListener, FocusListener, ActionListener {
 
 
 
+
+
+
     //unused methods
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
+    public void mouseReleased(MouseEvent e) {}
     @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
+    public void mouseEntered(MouseEvent e) {}
     @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
+    public void mouseExited(MouseEvent e) {}
     @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
+    public void mouseClicked(MouseEvent e) {}
 }
