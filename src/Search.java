@@ -188,7 +188,6 @@ public class Search implements MouseListener, FocusListener, ActionListener {
                     } else if (uni.getName().indexOf(num + ".") == 0 && user1.checkDuplicates(uni) == -1) {
                         searchResult.setForeground(new Color(40, 100, 10));
                         searchResult.setText("University added successfully!!!");
-                        System.out.println(uni.getName());
                         user1.addUni(uni);
                         break;
                     }
@@ -204,7 +203,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         searchResult.setFont(new Font("Georgia", Font.ITALIC, 15));
         searchResult.setText("");
         String input = searchField.getText();
-        if(!checkValid(input) || input==""){
+        if(!checkValid(input) || input.equals("")){
             searchResult.setText("Invalid search");
             searchResult.setForeground(new Color(255,24,24));
         } else if ((Integer.parseInt(searchField.getText())>=0 && Integer.parseInt(searchField.getText())<=98)){
@@ -214,7 +213,6 @@ public class Search implements MouseListener, FocusListener, ActionListener {
                 if(uni.getName().indexOf(num+".")==0 && user1.checkDuplicates(uni)>-1){
                     searchResult.setForeground(new Color(40, 100, 10));
                     searchResult.setText("University removed successfully!!!");
-                    System.out.println(uni.getName());
                     user1.removeUni(uni);
                     break;
                 } else{
@@ -372,7 +370,7 @@ public class Search implements MouseListener, FocusListener, ActionListener {
         ArrayList<Unis> unisArrayList = new ArrayList<Unis>();
         String fileName = "src\\top98.csv";
         BufferedReader reader  = null;
-        String line = "";
+        String line;
         try{
             reader = new BufferedReader(new FileReader(fileName));
             while((line = reader.readLine()) != null){
