@@ -282,7 +282,9 @@ public class Search implements MouseListener, FocusListener, ActionListener {
     //actionPerformed for exit button
     private void actionFromExitButton() {
         frame.dispose();
-        listFrame.dispose();
+        if(listFrame!=null) {
+            listFrame.dispose();
+        }
     }
 
     //check if search field input is valid
